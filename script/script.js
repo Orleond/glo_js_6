@@ -1,53 +1,43 @@
 'use strict';
 
-function inputNumber(a) {
-    let number = prompt(a);
 
-    function getNum(n) {
-        if (n === null) {
-            console.log('Игра окончена');
-        } else if (isNaN(parseFloat(n))) {
-            n = inputNumber('Введите число!');
-        } else if (+n > 100 || +n < 1) {
-            n = inputNumber('Загадай число от 1 до 100!');
-        }
-        return n;
-    }
-    return getNum(number);
-}
+function getHiddenNumber() {
+    let min = 1,
+        max = 100;
 
-function hiddenNumber() {
-
-    function hidN(min, max) {
+    function number() {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-    return hidN(1, 100);
+
+    return number();
 }
 
-function test(a, num) {
-    if (a > num) {
-        a = inputNumber('Загаданное число меньше. Продолжай отгадывать');
-        test(a, num);
-    } else if (a < num) {
-        a = inputNumber('Загаданное число больше. Продолжай отгадывать');
-        test(a, num);
+function getNumber(text) {
+    let userNumber = prompt(text);
+
+    if (isNaN(parseFloat(userNumber)) && userNumber !== null) {
+        return getNumber('Введите число! (от 1 до 100):');
+    } else if (userNumber === null) {
+        return 'Игра окончена';
     } else {
-        alert('Поздравляю! Вы выиграли!');
+        return +userNumber;
     }
 }
 
-function game() {
-    console.clear();
-    let num = hiddenNumber();
-    let a = inputNumber('Загадай число от 1 до 100');
-    test(a, num);
-
-    // let rep = confirm('Сыграть ещё?');
-    // if (rep === true) {
-    //     game();
-    // } else {
-    //     console.log('Игра окончена');
-    // }
+function checkNumber(userNumber, hiddenNumber) {
+    if (userNumber === 'Игра окончена') {
+        alert('Игра окончена');
+    } else if (userNumber > hiddenNumber) {
+        userNumber = getNumber('Загаданное число меньше, повторите ввод:');
+        checkNumber(userNumber, hiddenNumber);
+    } else if (userNumber < hiddenNumber) {
+        userNumber = getNumber('Загаданное число больше, повторите ввод:');
+        checkNumber(userNumber, hiddenNumber);
+    } else {
+        alert('Поздравляю! Вы угадали!');
+        console.log(userNumber);
+    }
 }
 
-game();
+let userNumber = getNumber('Введите число от 1 до 100:');
+checkNumber(userNumber, getHiddenNumber());
