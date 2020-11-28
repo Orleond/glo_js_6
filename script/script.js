@@ -1,43 +1,41 @@
 'use strict';
 
+let isNumber = function(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+};
 
 function getHiddenNumber() {
     let min = 1,
         max = 100;
 
-    function number() {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+    function getRandomHiddenNumber() {
+        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    return number();
+    return getRandomHiddenNumber();
 }
 
-function getNumber(text) {
+function getUserNumber(text) {
     let userNumber = prompt(text);
-
-    if (isNaN(parseFloat(userNumber)) && userNumber !== null) {
-        return getNumber('Введите число! (от 1 до 100):');
+    if (!isNumber(userNumber) && userNumber !== null) {
+        return getUserNumber('Введите число!');
     } else if (userNumber === null) {
-        return 'Игра окончена';
+        return alert('Игра окончена');
     } else {
         return +userNumber;
     }
 }
 
-function checkNumber(userNumber, hiddenNumber) {
-    if (userNumber === 'Игра окончена') {
-        alert('Игра окончена');
-    } else if (userNumber > hiddenNumber) {
-        userNumber = getNumber('Загаданное число меньше, повторите ввод:');
-        checkNumber(userNumber, hiddenNumber);
+function checkMatch(hiddenNumber, text) {
+    let userNumber = getUserNumber(text);
+    if (userNumber > hiddenNumber) {
+        checkMatch(hiddenNumber, 'Загаданное число меньше');
     } else if (userNumber < hiddenNumber) {
-        userNumber = getNumber('Загаданное число больше, повторите ввод:');
-        checkNumber(userNumber, hiddenNumber);
+        checkMatch(hiddenNumber, 'Загаданное число больше');
     } else {
         alert('Поздравляю! Вы угадали!');
-        console.log(userNumber);
     }
 }
 
-let userNumber = getNumber('Введите число от 1 до 100:');
-checkNumber(userNumber, getHiddenNumber());
+let hiddenNumber = getHiddenNumber();
+checkMatch(hiddenNumber, 'Введите число от 1 до 100');
