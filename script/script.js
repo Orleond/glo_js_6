@@ -1,68 +1,36 @@
 'use strict';
 
-let isNumber = function(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-};
+const books = document.querySelectorAll('.book'),
+    booksAside = document.querySelector('.books'),
+    bookTwo = books[0].querySelectorAll('li'),
+    booksTwoUl = books[0].querySelector('ul'),
+    bookFive = books[5].querySelectorAll('li'),
+    booksFive = books[5].querySelector('ul'),
+    bookSix = books[2].querySelectorAll('li'),
+    booksSix = books[2].querySelector('ul');
 
-function getNumberAttempts() {
-    let finish = 0;
+booksAside.insertAdjacentElement('afterbegin', books[1]);
+booksAside.insertAdjacentElement('beforeend', books[2]);
+books[3].before(books[4]);
 
-    return function getNumberAttemptsLeft(start) {
-        if (start !== finish) {
-            return --start;
-        }
-    };
-}
-
-function getHiddenNumber() {
-    let min = 1,
-        max = 100;
-
-    function getRandomHiddenNumber() {
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
-
-    return getRandomHiddenNumber();
-}
-
-function getUserNumber(text) {
-    let userNumber = prompt(text);
-    if (!isNumber(userNumber) && userNumber !== null) {
-        return getUserNumber('Введите число!');
-    } else if (userNumber === null) {
-        return alert('Игра окончена');
-    } else {
-        return +userNumber;
-    }
-}
-
-function checkMatch(hiddenNumber, text, attempts) {
-    let numberAttempts = getNumberAttempts();
-    let userNumber = getUserNumber(text);
-    if (userNumber > hiddenNumber && attempts > 0) {
-        attempts = numberAttempts(attempts);
-        checkMatch(hiddenNumber, 'Загаданное число меньше, осталось ' + attempts + ' попыток(ка)', attempts);
-    } else if (userNumber < hiddenNumber && attempts > 1) {
-        attempts = numberAttempts(attempts);
-        checkMatch(hiddenNumber, 'Загаданное число больше, осталось ' + attempts + ' попыток(ка)', attempts);
-    } else if (attempts === 1) {
-        if (confirm('Попытки закончились. Хотите сыграть ещё?')) {
-            let hiddenNumber = getHiddenNumber();
-            checkMatch(hiddenNumber, 'Введите число от 1 до 100', 10);
-        } else {
-            alert('Спасибо за игру, удачи!');
-        }
-    } else {
-        if (confirm('Поздравляю! Вы угадали! Хотите сыграть ещё?')) {
-            let hiddenNumber = getHiddenNumber();
-            checkMatch(hiddenNumber, 'Введите число от 1 до 100', 10);
-        } else {
-            alert('Спасибо за игру, удачи!');
-        }
-    }
-}
+document.querySelector('body').style.backgroundImage = 'url(./image/123.jpg)';
+books[4].querySelector('a').textContent = 'Книга 3. this и Прототипы Объектов';
+document.querySelector('.adv').style.display = 'none';
 
 
+booksTwoUl.insertAdjacentElement('beforeend', bookTwo[2]);
+bookTwo[4].before(bookTwo[6]);
+bookTwo[4].before(bookTwo[8]);
+booksTwoUl.insertAdjacentElement('beforeend', bookTwo[10]);
 
-let hiddenNumber = getHiddenNumber();
-checkMatch(hiddenNumber, 'Введите число от 1 до 100', 10);
+
+bookFive[1].after(bookFive[9]);
+bookFive[4].after(bookFive[2]);
+bookFive[7].after(bookFive[5]);
+
+
+let six = document.createElement('li');
+six.textContent = 'Глава 8: За пределами ES6';
+booksSix.append(six);
+booksSix.insertAdjacentElement('beforeend', bookSix[9]);
+console.log(bookSix);
